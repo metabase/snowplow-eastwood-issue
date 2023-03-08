@@ -1,3 +1,7 @@
+A simple repo to demonstrate the issue discussed [here](https://clojurians.slack.com/archives/C03S1KBA2/p1667925853699669)
+
+This can be deleted whenever it is convenient.
+
 To reproduce:
 
 - `clojure -X:run-x` - Runs OK.
