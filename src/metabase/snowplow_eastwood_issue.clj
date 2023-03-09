@@ -10,19 +10,19 @@
 
 (set! *warn-on-reflection* true)
 
+(def network-config
+  (let [request-config      (-> (RequestConfig/custom)
+                                (.setCookieSpec CookieSpecs/STANDARD)
+                                (.build))
+        client              (-> (HttpClients/custom)
+                                (.setConnectionManager (PoolingHttpClientConnectionManager.))
+                                (.setDefaultRequestConfig request-config)
+                                (.build))
+        http-client-adapter (ApacheHttpClientAdapter. "http://localhost:9090" client)]
+    (NetworkConfiguration. http-client-adapter)))
+
 (defonce tracker
-         (let [request-config      (-> (RequestConfig/custom)
-                                       ;; Set cookie spec to `STANDARD` to avoid warnings about an invalid cookie
-                                       ;; header in request response (PR #24579)
-                                       (.setCookieSpec CookieSpecs/STANDARD)
-                                       (.build))
-               client              (-> (HttpClients/custom)
-                                       (.setConnectionManager (PoolingHttpClientConnectionManager.))
-                                       (.setDefaultRequestConfig request-config)
-                                       (.build))
-               http-client-adapter (ApacheHttpClientAdapter. "http://localhost:9090" client)
-               network-config      (NetworkConfiguration. http-client-adapter)
-               tracker-config      (TrackerConfiguration. "my-namespace" "snowplow-eastwood-app-id")
+         (let [tracker-config      (TrackerConfiguration. "my-namespace" "snowplow-eastwood-app-id")
                emitter-config      (-> (EmitterConfiguration.) (.batchSize 1))]
            (Snowplow/createTracker
             ^TrackerConfiguration tracker-config
@@ -32,3 +32,8 @@
 (defn -main
   [& _args]
   (print tracker))
+
+(comment
+  network-config                                            ;; Evaluating this works
+  (.getCookieJar network-config)                            ;; This blows up rather than returning nil
+  )
