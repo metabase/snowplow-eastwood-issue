@@ -1,4 +1,4 @@
-{:paths ["src" "resources"]
+{:paths ["src"]
  :deps  {org.clojure/clojure                         {:mvn/version "1.10.3"}
          com.snowplowanalytics/snowplow-java-tracker {:mvn/version "1.0.0"
                                                       :exclusions  [com.fasterxml.jackson.core/jackson-databind]}

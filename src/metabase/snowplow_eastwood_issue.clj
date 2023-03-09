@@ -31,9 +31,11 @@
 
 (defn -main
   [& _args]
-  (print tracker))
+  (println "Entry point")
+  (println (str tracker))
+  (println "All done"))
 
 (comment
-  network-config                                            ;; Evaluating this works
-  (.getCookieJar network-config)                            ;; This blows up rather than returning nil
+  network-config                  ;; Evaluating this works
+  (.getCookieJar network-config)  ;; This blows up rather than returning nil
   )
